@@ -36,7 +36,7 @@ class Room:
                     opposite = "east"
                 elif direction == "east":
                     opposite = "west"
-                self.linked_room.append((self, opposite))
+                room[0].linked_room.append((self, opposite))
                 self.name = room[0].name
                 self.description = room[0].description
                 self.linked_room = room[0].linked_room
@@ -73,10 +73,11 @@ class Enemy:
         self.weakness = weakness
 
     def describe(self):
+        print("{} is here!".format(self.name))
         print(self.description)
 
     def talk(self):
-        print(self.phrase)
+        print("[{} says]: {}".format(self.name, self.phrase))
 
 
 class Item:
@@ -91,4 +92,4 @@ class Item:
         return self.name
 
     def describe(self):
-        print(self.description)
+        print("The [{}] is here - {}".format(self.name, self.description))
