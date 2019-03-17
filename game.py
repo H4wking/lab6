@@ -5,6 +5,7 @@ class Room:
         self.linked_room = []
         self.character = None
         self.item = None
+        self.count = 0
 
     def set_description(self, description):
         self.description = description
@@ -27,21 +28,7 @@ class Room:
     def move(self, direction):
         for room in self.linked_room:
             if direction == room[1]:
-                opposite = ""
-                if direction == "north":
-                    opposite = "south"
-                elif direction == "south":
-                    opposite = "north"
-                elif direction == "west":
-                    opposite = "east"
-                elif direction == "east":
-                    opposite = "west"
-                room[0].linked_room.append((self, opposite))
-                self.name = room[0].name
-                self.description = room[0].description
-                self.linked_room = room[0].linked_room
-                self.character = room[0].character
-                self.item = room[0].item
+                self = room[0]
                 return self
         else:
             print("There is no room on {}.".format(direction))
@@ -54,12 +41,13 @@ class Room:
         for room in self.linked_room:
             print("The {} is {}".format(room[0].name, room[1]))
 
-
-    def __str__(self):
+    def __repr__(self):
         return str([self.name, self.description, self.linked_room, self.character, self.item])
 
 
 class Enemy:
+    count = 0
+
     def __init__(self, name, description):
         self.name = name
         self.description = description
@@ -78,6 +66,17 @@ class Enemy:
 
     def talk(self):
         print("[{} says]: {}".format(self.name, self.phrase))
+
+    def fight(self, item):
+        if item == self.weakness:
+            Enemy.count += 1
+            print("You fend {} off with the {}".format(self.name, item))
+            return True
+        print("{} crushes you, puny adventurer!".format(self.name))
+        return False
+
+    def get_defeated(self):
+        return Enemy.count
 
 
 class Item:
